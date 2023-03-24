@@ -171,6 +171,10 @@ public class twitter : MonoBehaviour
     private bool determinePressTiming()
     {
         string fT = Bomb.GetFormattedTime();
+        if (Bomb.GetTime() < 60)
+        {
+            fT = "00:" + Math.Floor(Bomb.GetTime()) % 60;
+        }
         string seconds1 = fT.Substring(fT.Length - 2, 1);
         string seconds2 = fT.Substring(fT.Length - 1);
         int s1Int = Int32.Parse(seconds1);
