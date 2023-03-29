@@ -170,6 +170,7 @@ public class twitter : MonoBehaviour
 
     private bool determinePressTiming()
     {
+ 
         string fT = Bomb.GetFormattedTime();
         if (Bomb.GetTime() < 60)
         {
@@ -198,7 +199,7 @@ public class twitter : MonoBehaviour
                     return true;
                 break;
             case 4:
-                if (new[] { "1", "2", "4", "5", "10", "20", "25", "50", "100" }.Contains(seconds1 + seconds2))
+                if (new[] { "01", "02", "04", "05", "10", "20", "25", "50" }.Contains(seconds1 + seconds2))
                     return true;
                 break;
             case 5:
@@ -367,21 +368,31 @@ public class twitter : MonoBehaviour
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} <1-5> <##> [Presses button 1-5 from top to bottom when seconds digits are <##>.]";
+    private readonly string TwitchHelpMessage = @"!{0} <1-5> <##> [Presses button 1-5 from top to bottom when seconds digits are <##>.] or !{0} press [Presses the logo]";
 #pragma warning restore 414
 
     IEnumerator ProcessTwitchCommand(string Command)
     {
         Command = Command.Trim().ToUpper();
-        yield return null;
         string[] commands = Command.Split(' ');
         if (commands.Length != 2)
-            yield break;
-        if (!"12345".Contains(commands[0]) || commands[0].Length != 1 || commands[1].Length != 2 || Int32.Parse(commands[1]) > 60)
         {
-            print("WE HAVE BROKEN");
+            if (commands.Length == 1 && twitterLogoGO.activeSelf)
+            {
+                if (commands[0] == "PRESS")
+                {
+                    twitterLogo.OnInteract();
+                    yield return null;
+                }
+            }
             yield break;
         }
+            
+        if (!"12345".Contains(commands[0]) || commands[0].Length != 1 || commands[1].Length != 2 || Int32.Parse(commands[1]) > 60 || twitterLogoGO.activeSelf)
+        {
+            yield break;
+        }
+        yield return null;
         while (Math.Floor(Bomb.GetTime() % 60) != Int32.Parse(commands[1]))
         {
             yield return "trycancel";
