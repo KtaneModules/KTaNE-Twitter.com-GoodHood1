@@ -18,11 +18,14 @@ public class twitter : MonoBehaviour
     private bool ModuleSolved;
 
     public KMSelectable[] buttons;
+
     public TextMesh[] messageTexts;
 
     private int correctButton;
 
     public MeshRenderer[] iconRenderers;
+    public MeshRenderer bgMesh;
+
     public Material[] peopleImgs;
 
     private string[] peopleNames = { "Eltrick", "GhostSalt", "eXish", "Quinn Wuest", "Kilo Bites", "GoodHood", "Blananas2", "Deaf", "Kuro" };
@@ -158,7 +161,7 @@ public class twitter : MonoBehaviour
         {
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, button.transform);
             ModuleSolved = true;
-            Module.HandlePass();
+            StartCoroutine("solveFade");
         }
         else
         {
@@ -166,6 +169,21 @@ public class twitter : MonoBehaviour
             Debug.LogFormat("[Twitter.com #{0}] You have pressed button {1} at {2} which is wrong. Strike!", ModuleId, Array.IndexOf(buttons, button) + 1, Bomb.GetFormattedTime());
             Start();
         }
+    }
+
+    IEnumerator solveFade()
+    {
+        float delta = 0;
+        float duration = 0.6f;
+        Color start = bgMesh.material.color;
+        while (delta < duration)
+        {
+            delta += Time.deltaTime;
+            yield return null;
+            bgMesh.material.color = Color.Lerp(start, "246F2A".Color(), delta / duration);
+        }
+        Module.HandlePass();
+        
     }
 
     private bool determinePressTiming()

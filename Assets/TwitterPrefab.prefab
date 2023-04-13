@@ -3999,6 +3999,7 @@ MonoBehaviour:
   - {fileID: 23768184756425472}
   - {fileID: 23959787392872560}
   - {fileID: 23170124599505144}
+  bgMesh: {fileID: 23987878698312472}
   peopleImgs:
   - {fileID: 2100000, guid: 3f2d76845fa37ee40a0141e6a4933e03, type: 2}
   - {fileID: 2100000, guid: 2fc07ed080ff53a41bfe3739aa21c287, type: 2}
